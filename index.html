@@ -68,6 +68,7 @@
 
         let M = cv.Mat.ones(dilate, dilate, cv.CV_8U);
 
+        console.log('aleko');
 // You can try more different parameters
         cv.dilate(src2, src2, M, anchor, 1, cv.BORDER_CONSTANT, cv.morphologyDefaultBorderValue());
         // cv.resize(src1, src1, dsize, 0, 0, cv.INTER_AREA);
