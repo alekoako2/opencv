@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hello OpenCV.js</title>
+</head>
+<body>
+<div>
+    <!--    <canvas id="canvasInput1" width="1000" height="1000"></canvas>-->
+    <!--    <canvas id="canvasInput2" width="1000" height="1000"></canvas>-->
+    <img src="empty.jpg" id="empty" alt="">
+    <img src="1.jpg" id='test' alt="">
+    <!--    <video id="video" width="640" height="480" autoplay></video>-->
+    <div>
+
+        <label for="x">x</label><input type="number" id="x" value="0">
+        <label for="y">y</label><input type="number" id="y" value="300">
+        <label for="z">z</label><input type="number" id="z" value="3">
+        <label for="dilate">dilate</label><input type="number" id="dilate" value="3">
+
+        <canvas id="canvasOutput" width="640" height="480"></canvas>
+    </div>
+</div>
+<script type="text/javascript">
+    let video, src, dst, cap, fps;
+    let x = parseFloat(document.getElementById('x').value), y = parseFloat(document.getElementById('y').value),
+        z = parseFloat(document.getElementById('z').value),dilate = parseFloat(document.getElementById('dilate').value);
+
+    document.getElementById('x').addEventListener('input', (e) => {
+        x = parseFloat(e.target.value);
+        test();
+
+    });
+    document.getElementById('y').addEventListener('input', (e) => {
+        y = parseFloat(e.target.value);
+        test();
+    });
+    document.getElementById('z').addEventListener('input', (e) => {
+        z = parseFloat(e.target.value);
+        test();
+
+    });
+    document.getElementById('dilate').addEventListener('input', (e) => {
+        dilate = parseFloat(e.target.value);
+        test();
+
+    });
+
+    function onOpenCvReady() {
+        cv['onRuntimeInitialized'] = () => {
+            test();
+        };
+    }
+
+    function test() {
+        let dst = new cv.Mat();
+
+        let src1 = cv.imread("empty");
+        let src2 = cv.imread("test");
+        let dsize = new cv.Size(20, 20);
+        cv.cvtColor(src1, src1, cv.COLOR_RGBA2GRAY, 0);
+        cv.cvtColor(src2, src2, cv.COLOR_RGBA2GRAY, 0);
+        let ksize = new cv.Size(5, 5);
+        let anchor = new cv.Point(-1, -1);
+// You can try more different parameters
+        cv.blur(src1, src1, ksize, anchor, cv.BORDER_DEFAULT);
+        cv.blur(src2, src2, ksize, anchor, cv.BORDER_DEFAULT);
+
+        let M = cv.Mat.ones(dilate, dilate, cv.CV_8U);
+
+// You can try more different parameters
+        cv.dilate(src2, src2, M, anchor, 1, cv.BORDER_CONSTANT, cv.morphologyDefaultBorderValue());
+        // cv.resize(src1, src1, dsize, 0, 0, cv.INTER_AREA);
+        // cv.resize(src2, src2, dsize, 0, 0, cv.INTER_AREA);
+
+        // cv.BackgroundSubtractorMOG2(src1);
+        cv.subtract(src1, src2, dst);
+        // dst=src1-src2;
+        // console.log(src1);
+        // console.log(dst);
+        // let dsize2 = new cv.Size(500, 500);
+        // cv.blur(dst, dst, ksize, anchor, cv.BORDER_DEFAULT);
+
+        // cv.resize(dst, dst, dsize2, 0, 0, cv.INTER_AREA);
+        cv.Canny(dst, dst, x, y, z, false);
+        let contours = new cv.MatVector();
+        let hierarchy = new cv.Mat();
+        cv.findContours(dst, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+        for (let i = 0; i < contours.size(); ++i) {
+            let color = new cv.Scalar(Math.round(Math.random() * 255), Math.round(Math.random() * 255),
+                Math.round(Math.random() * 255));
+            cv.drawContours(dst, contours, i, color, 1, cv.LINE_8, hierarchy, 100);
+        }
+        cv.imshow('canvasOutput', dst);
+        src1.delete();
+        src2.delete();
+        dst.delete();
+    }
+
+</script>
+<script async src="opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+</body>
+</html>
