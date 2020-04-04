@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c43e61be-8c3c-4afd-9a43-0822788bae41" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/saveactions_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -13,6 +15,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -41,11 +44,12 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+    <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -61,7 +65,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0ebd8bd2-f75a-4ad3-8a9a-9c8cd89b78f0" name="Default Changelist" comment="" />
+      <changelist id="c43e61be-8c3c-4afd-9a43-0822788bae41" name="Default Changelist" comment="" />
       <created>1581963720582</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -87,6 +91,8 @@
       <workItem from="1585849122149" duration="787000" />
       <workItem from="1585850192197" duration="12878000" />
       <workItem from="1585914815269" duration="144000" />
+      <workItem from="1586018515594" duration="1436000" />
+      <workItem from="1586024738382" duration="3369000" />
     </task>
     <servers />
   </component>
@@ -106,20 +112,24 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="320" y="127" key="#Notifications/0.23.1440.877@0.23.1440.877" timestamp="1583752347166" />
-    <state x="221" y="100" key="SettingsEditor" timestamp="1585850114876">
+    <state x="221" y="100" key="SettingsEditor" timestamp="1586024865252">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="221" y="100" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1585850114876" />
-    <state width="500" height="400" key="SwitcherDM" timestamp="1585910231077">
+    <state x="221" y="100" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1586024865252" />
+    <state width="500" height="400" key="SwitcherDM" timestamp="1586028134983">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="500" height="400" key="SwitcherDM/0.23.1440.877@0.23.1440.877" timestamp="1585910231077" />
+    <state width="500" height="400" key="SwitcherDM/0.23.1440.877@0.23.1440.877" timestamp="1586028134983" />
     <state width="500" height="445" key="SwitcherDM/0.23.1920.1177@0.23.1920.1177" timestamp="1583780932476" />
     <state x="100" y="123" width="1720" height="977" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1583782434219">
       <screen x="0" y="23" width="1920" height="1177" />
     </state>
     <state x="75" y="98" width="1290" height="728" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.877@0.23.1440.877" timestamp="1583258191636" />
     <state x="100" y="123" width="1720" height="977" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1920.1177@0.23.1920.1177" timestamp="1583782434219" />
+    <state x="466" y="99" key="git4idea.branch.GitSmartOperationDialog" timestamp="1585918441597">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="466" y="99" key="git4idea.branch.GitSmartOperationDialog/0.23.1440.877@0.23.1440.877" timestamp="1585918441597" />
     <state x="385" y="213" key="search.everywhere.popup" timestamp="1585849966154">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
