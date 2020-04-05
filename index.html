@@ -8,108 +8,154 @@
 </head>
 <body>
 <div class="container mt-5">
+    <!--    Empty backround-->
     <div class="row mb-3 mt-5">
         <div class="col">
             <h3>Empty backround</h3>
-            <img src="empty.jpg" class="w-100" id="empty" alt="">
+            <img src="empty4.jpg" class="w-100" id="empty" alt="">
         </div>
     </div>
+
+    <!--    Book with background-->
     <div class="row mb-3">
         <div class="col">
             <h3>Book with background</h3>
-            <img src="1.jpg" class="w-100" id='test' alt="">
+            <img src="6.jpg" class="w-100" id='test' alt="">
         </div>
     </div>
+
+    <!--    jpg to grayscale-->
     <div class="row mb-3">
         <div class="col">
             <h3>jpg to grayscale</h3>
             <canvas id="grayscale" class="w-100" width="640" height="480"></canvas>
         </div>
     </div>
+
+    <!--    blur image-->
     <div class="row mb-3">
         <div class="col">
             <h3>blur image</h3>
             <canvas id="blur" class="w-100" width="640" height="480"></canvas>
         </div>
     </div>
+
+    <!--    subtracted image-->
     <div class="row mb-3">
         <div class="col">
             <h3>subtracted image</h3>
             <canvas id="subtract" class="w-100" width="640" height="480"></canvas>
         </div>
     </div>
+
+    <!--    dilate image-->
     <div class="row mb-3">
         <div class="col">
             <h3>dilate image</h3>
             <canvas id="dilatei" class="w-100" width="640" height="480"></canvas>
         </div>
     </div>
+
+    <!--    canny edge detection-->
     <div class="row mb-3">
         <div class="col">
             <h3>canny edge detection</h3>
             <canvas id="canny" class="w-100" width="640" height="480"></canvas>
         </div>
     </div>
+
+    <!--    closed-->
     <div class="row mb-3">
         <div class="col">
-            <h3>contours</h3>
+            <h3>closed</h3>
+            <canvas id="closed" class="w-100" width="640" height="480"></canvas>
+        </div>
+    </div>
+
+    <!--    contours-->
+    <div class="row mb-3">
+        <div class="col">
+            <h3>hull contours</h3>
             <canvas id="contours" class="w-100" width="640" height="480"></canvas>
         </div>
     </div>
+
+    <!--    Max perimeter bounding react-->
     <div class="row mb-3">
         <div class="col">
-            <h3>Min area bounding react</h3>
+            <h3>Max perimeter bounding react</h3>
             <canvas id="rect" class="w-100" width="640" height="480"></canvas>
         </div>
     </div>
 
 
     <div style="position: fixed;top: 0;right:0; background-color: lightgray" class="p-2 rounded">
+        <!--        threshold1-->
         <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="threshold1">threshold1</label>
-                    <input type="range" class="form-control-range" id="threshold1" value="0">
+                    <input max="1000" type="range" class="form-control-range" id="threshold1" value="70">
                 </div>
             </div>
         </div>
+
+        <!--        threshold2-->
         <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="threshold2">threshold2</label>
-                    <input type="range" class="form-control-range" id="threshold2" value="300">
+                    <input max="1000" type="range" class="form-control-range" id="threshold2" value="300">
                 </div>
             </div>
         </div>
-        <div class="row">
+
+        <!--        apertureSize-->
+        <div hidden class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="apertureSize">apertureSize</label>
-                    <input type="range" class="form-control-range" id="apertureSize" value="3">
+                    <input max="1000" type="range" class="form-control-range" id="apertureSize" value="3">
                 </div>
             </div>
         </div>
+
+        <!--        dilate-->
         <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="dilate">dilate</label>
-                    <input type="range" class="form-control-range" id="dilate" value="3">
+                    <input max="1000" type="range" class="form-control-range" id="dilate" value="3">
                 </div>
             </div>
         </div>
-        <div class="row">
+
+        <!--        anchor-->
+        <div hidden class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="anchor">anchor</label>
-                    <input type="range" class="form-control-range" id="anchor" value="-1">
+                    <input max="1000" type="range" class="form-control-range" id="anchor" value="-1">
                 </div>
             </div>
         </div>
+
+        <!--        ksize-->
         <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label for="ksize">ksize</label>
-                    <input type="range" class="form-control-range" id="ksize" value="5">
+                    <input max="1000" type="range" class="form-control-range" id="ksize" value="5">
+                </div>
+            </div>
+        </div>
+
+        <!--        closedKsize-->
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="ksize">closedKsize</label>
+                    <input max="1000" type="range" class="form-control-range" id="closedKsize" value="2">
                 </div>
             </div>
         </div>
