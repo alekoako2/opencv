@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c43e61be-8c3c-4afd-9a43-0822788bae41" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/4.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/6.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/empty2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/empty3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/empty4.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/empty4.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/empty4.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
     </list>
@@ -30,7 +23,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="test" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -100,7 +93,7 @@
       <workItem from="1585850192197" duration="12878000" />
       <workItem from="1585914815269" duration="144000" />
       <workItem from="1586018515594" duration="1436000" />
-      <workItem from="1586024738382" duration="9293000" />
+      <workItem from="1586024738382" duration="21068000" />
     </task>
     <servers />
   </component>
@@ -124,10 +117,10 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="221" y="100" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1586024865252" />
-    <state width="500" height="400" key="SwitcherDM" timestamp="1586095259043">
+    <state width="500" height="400" key="SwitcherDM" timestamp="1586103067546">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="500" height="400" key="SwitcherDM/0.23.1440.877@0.23.1440.877" timestamp="1586095259043" />
+    <state width="500" height="400" key="SwitcherDM/0.23.1440.877@0.23.1440.877" timestamp="1586103067546" />
     <state width="500" height="445" key="SwitcherDM/0.23.1920.1177@0.23.1920.1177" timestamp="1583780932476" />
     <state x="100" y="123" width="1720" height="977" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1583782434219">
       <screen x="0" y="23" width="1920" height="1177" />
