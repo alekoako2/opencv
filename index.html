@@ -11,16 +11,18 @@
     <!--    Empty backround-->
     <div class="row mb-3 mt-5">
         <div class="col">
-            <h3>Empty backround</h3>
-            <img src="empty4.jpg" class="w-100" id="empty" alt="">
+            <h3>Empty backround
+                <button id="capture" type="button" class="btn btn-primary">take background picture</button>
+            </h3>
+            <img src="empty4.jpg" id="empty" class="w-100" alt="">
         </div>
     </div>
 
-    <!--    Book with background-->
+    <!--    video-->
     <div class="row mb-3">
         <div class="col">
-            <h3>Book with background</h3>
-            <img src="6.jpg" class="w-100" id='test' alt="">
+            <h3>video</h3>
+            <img src="6.jpg" id="withbook" class="w-100" alt="">
         </div>
     </div>
 
@@ -141,7 +143,7 @@
         </div>
 
         <!--        ksize-->
-        <div class="row">
+        <div class="row" hidden>
             <div class="col">
                 <div class="form-group">
                     <label for="ksize">ksize</label>
@@ -154,8 +156,8 @@
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label for="ksize">closedKsize</label>
-                    <input max="1000" type="range" class="form-control-range" id="closedKsize" value="2">
+                    <label for="closedKsize">closedKsize</label>
+                    <input max="1000" type="range" class="form-control-range" id="closedKsize" min="2" value="2">
                 </div>
             </div>
         </div>

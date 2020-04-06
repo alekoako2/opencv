@@ -1,107 +1,201 @@
-let video, src, dst, cap, fps;
-let threshold1 = parseFloat(document.getElementById('threshold1').value),
-    threshold2 = parseFloat(document.getElementById('threshold2').value),
-    apertureSize = parseFloat(document.getElementById('apertureSize').value),
-    dilate = parseFloat(document.getElementById('dilate').value),
-    anchora = parseFloat(document.getElementById('anchor').value),
-    closedKsize = parseFloat(document.getElementById('closedKsize').value),
-    ksizea = parseFloat(document.getElementById('ksize').value);
-
-console.log(dilate);
-document.getElementById('threshold1').addEventListener('input', (e) => {
-    threshold1 = parseFloat(e.target.value);
-    test();
-
-});
-document.getElementById('threshold2').addEventListener('input', (e) => {
-    threshold2 = parseFloat(e.target.value);
-    test();
-});
-document.getElementById('apertureSize').addEventListener('input', (e) => {
-    apertureSize = parseFloat(e.target.value);
-    test();
-
-});
-document.getElementById('dilate').addEventListener('input', (e) => {
-    dilate = parseFloat(e.target.value);
-    test();
-
-});
-document.getElementById('anchor').addEventListener('input', (e) => {
-    anchora = parseFloat(e.target.value);
-    test();
-
-});
-document.getElementById('ksize').addEventListener('input', (e) => {
-    ksizea = parseFloat(e.target.value);
-    test();
-
-});
-document.getElementById('closedKsize').addEventListener('input', (e) => {
-    closedKsize = parseFloat(e.target.value);
-    test();
-
-});
+let video, contours, src2, toShow, cap, FPS, threshold1, threshold2, apertureSize, dilate, anchora, closedKsize, ksizea;
 
 function onOpenCvReady() {
     cv['onRuntimeInitialized'] = () => {
-        test();
+        process();
     };
 }
 
-function test() {
-    let dst = new cv.Mat();
+function process() {
+    threshold1 = parseFloat(document.getElementById('threshold1').value),
+        threshold2 = parseFloat(document.getElementById('threshold2').value),
+        apertureSize = parseFloat(document.getElementById('apertureSize').value),
+        dilate = parseFloat(document.getElementById('dilate').value),
+        anchora = parseFloat(document.getElementById('anchor').value),
+        closedKsize = parseFloat(document.getElementById('closedKsize').value),
+        ksizea = parseFloat(document.getElementById('ksize').value);
+    try {
+        src2 = cv.imread('withbook');
+        toShow = cv.imread('withbook');
+        let dst = new cv.Mat();
+        let begin = Date.now();
+        // cap.read(src2);
+        // cap.read(toShow);
 
-    let src1 = cv.imread("empty");
-    let toShow = cv.imread("test");
-    let src2 = cv.imread("test");
-    let dsize = new cv.Size(20, 20);
-    cv.cvtColor(src1, src1, cv.COLOR_RGBA2GRAY, 0);
-    cv.cvtColor(src2, src2, cv.COLOR_RGBA2GRAY, 0);
-    cv.imshow('grayscale', src2);
+        let src1 = cv.imread("empty");
+        // let toShow = cv.imread("test");
+        // let src2 = cv.imread("test");
+        gray(src1);
+        gray(src2);
+        cv.imshow('grayscale', src2);
+
+        gaussianBlur(src1);
+        gaussianBlur(src2);
+        cv.imshow('blur', src2);
+
+        cv.subtract(src1, src2, dst);
+
+        cv.imshow('subtract', dst);
+
+        dilatef(dst);
+        cv.imshow('dilatei', dst);
+
+        cv.Canny(dst, dst, threshold1, threshold2, apertureSize, false);
+
+        cv.imshow('canny', dst);
+
+        closed(dst);
+        cv.imshow('closed', dst);
+
+        let biggestPerimaterContour = findAndDrawContours(dst);
+        cv.imshow('contours', dst);
+
+        if (biggestPerimaterContour !== undefined) {
+            drawExtremePoints(biggestPerimaterContour, toShow);
+            cv.imshow('rect', toShow);
+
+            // drawMinRect(biggestPerimaterContour, toShow);
+        }
+        // cv.imshow('rect', toShow);
+
+        toShow.delete();
+        src1.delete();
+        src2.delete();
+        dst.delete();
+        contours.delete();
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function drawExtremePoints(cnt, src) {
+    var lcntPoint = [];
+    for (let i = 0; i < cnt.rows; i++) {
+        lcntPoint.push({x: cnt.data32S[i * 2], y: cnt.data32S[i * 2 + 1]});
+    }
+    var a = findSmallestSum(lcntPoint);
+    var extLeft = [a.x, a.y];
+    console.log(a);
+
+    a = findMaxSum(lcntPoint);
+    var extRight = [a.x, a.y];
+    console.log(a);
+
+    a = findSmallestDiff(lcntPoint);
+    var extTop = [a.x, a.y];
+    console.log(a);
+
+    a = findLargestDiff(lcntPoint);
+    var extBottom = [a.x, a.y];
+    console.log(a);
+
+    function findSmallestSum(arr) {
+        let smallestSum = (arr[0].x + arr[0].y);
+        let index = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if ((arr[i].x + arr[i].y) < smallestSum) {
+                smallestSum = arr[i].x + arr[i].y;
+                index = i;
+            }
+        }
+        return arr[index];
+    }
+
+    function findMaxSum(arr) {
+        let maxSum = (arr[0].x + arr[0].y);
+        let index = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if ((arr[i].x + arr[i].y) > maxSum) {
+                maxSum = arr[i].x + arr[i].y;
+                index = i;
+            }
+        }
+        return arr[index];
+    }
+
+    function findSmallestDiff(arr) {
+        let smallestDiff = arr[0].y - arr[0].x;
+        let index = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if ((arr[i].y - arr[i].x) < smallestDiff) {
+                smallestDiff = arr[i].y - arr[i].x;
+                index = i;
+                console.log(smallestDiff);
+            }
+        }
+        return arr[index];
+    }
+
+    function findLargestDiff(arr) {
+        let largestDiff = arr[0].y - arr[0].x;
+        let index = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if ((arr[i].y - arr[i].x) > largestDiff) {
+                largestDiff = arr[i].y - arr[i].x;
+                index = i;
+            }
+        }
+        return arr[index];
+    }
+
+    // console.log(`extreme left: ${extLeft}`);
+    // console.log(`extreme top: ${extTop}`);
+    // console.log(`extreme bottom: ${extBottom}`);
+    // console.log(`extreme right: ${extRight}`);
+
+    let circlel = new cv.Circle(new cv.Point(...extLeft), 3);
+    let circler = new cv.Circle(new cv.Point(...extRight), 3);
+    let circlet = new cv.Circle(new cv.Point(...extTop), 3);
+    let circleb = new cv.Circle(new cv.Point(...extBottom), 3);
+    let circleColor = new cv.Scalar(255, 0, 0, 255);
+    let lineColor = new cv.Scalar(0, 177, 106, 255);
+
+    cv.line(src, circlel.center, circlet.center, lineColor, 2, cv.LINE_AA, 0);
+    cv.line(src, circlet.center, circler.center, lineColor, 2, cv.LINE_AA, 0);
+    cv.line(src, circler.center, circleb.center, lineColor, 2, cv.LINE_AA, 0);
+    cv.line(src, circleb.center, circlel.center, lineColor, 2, cv.LINE_AA, 0);
+
+    cv.circle(src, circlel.center, circlel.radius, circleColor);
+    cv.circle(src, circler.center, circler.radius, circleColor);
+    cv.circle(src, circlet.center, circlet.radius, circleColor);
+    cv.circle(src, circleb.center, circleb.radius, circleColor);
+
+}
+
+function gray(src) {
+    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+}
+
+function gaussianBlur(src) {
     let ksize = new cv.Size(ksizea, ksizea);
-    let anchor = new cv.Point(anchora, anchora);
-// You can try more different parameters
-    cv.GaussianBlur(src1, src1, ksize, 0, 0, cv.BORDER_DEFAULT);
-    cv.GaussianBlur(src2, src2, ksize, 0, 0, cv.BORDER_DEFAULT);
+    cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
+}
 
-    cv.imshow('blur', src2);
-
-    cv.subtract(src1, src2, dst);
-
-    cv.imshow('subtract', dst);
-
+function dilatef(src) {
     let M = cv.Mat.ones(dilate, dilate, cv.CV_8U);
 
-// You can try more different parameters
-    cv.dilate(dst, dst, M, anchor, 1, cv.BORDER_CONSTANT, cv.morphologyDefaultBorderValue());
+    let anchor = new cv.Point(anchora, anchora);
+    cv.dilate(src, src, M, anchor, 1, cv.BORDER_CONSTANT, cv.morphologyDefaultBorderValue());
 
-    cv.imshow('dilatei', dst);
+    M.delete();
+}
 
-    cv.Canny(dst, dst, threshold1, threshold2, apertureSize, false);
-
-    cv.imshow('canny', dst);
+function closed(src) {
 
     let closedKsizeaa = new cv.Size(closedKsize, closedKsize);
 
     let kernel = cv.getStructuringElement(cv.MORPH_RECT, closedKsizeaa);
-    cv.morphologyEx(dst, dst, cv.MORPH_GRADIENT, kernel);
+    cv.morphologyEx(src, src, cv.MORPH_GRADIENT, kernel);
 
-    cv.imshow('closed', dst);
+    kernel.delete();
 
-    let contours = new cv.MatVector();
+}
+
+function findAndDrawContours(src) {
+    contours = new cv.MatVector();
     let hierarchy = new cv.Mat();
-    let poly = new cv.MatVector();
-    cv.findContours(dst, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
-    // for (let i = 0; i < contours.size(); ++i) {
-    //     let tmp = new cv.Mat();
-    //     let cnt = contours.get(i);
-    //     // You can try more different parameters
-    //     cv.approxPolyDP(cnt, tmp, 3, true);
-    //     poly.push_back(tmp);
-    //     cnt.delete();
-    //     tmp.delete();
-    // }
+    cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+
     let hull = new cv.MatVector();
 
     for (let i = 0; i < contours.size(); ++i) {
@@ -113,7 +207,6 @@ function test() {
         cnt.delete();
         tmp.delete();
     }
-    // perimeter = cv.arcLength(cnt,True)
     let max = 0;
     let index = 0;
     for (let i = 0; i < contours.size(); ++i) {
@@ -124,99 +217,22 @@ function test() {
         }
         let color = new cv.Scalar(Math.round(Math.random() * 255), Math.round(Math.random() * 255),
             Math.round(Math.random() * 255));
-        cv.drawContours(dst, hull, i, color, 1, cv.LINE_8, hierarchy, 100);
-    }
-    cv.imshow('contours', dst);
-
-    // for (let i = 0; i < contours.size(); ++i) {
-    let cnt = contours.get(index);
-
-    var lcntPoint = [], lcnt2Point = [];
-    for (let i = 0; i < cnt.rows; i++) {
-
-        lcntPoint.push({x: cnt.data32S[i * 2], y: cnt.data32S[i * 2 + 1]});
-    }
-    var a = findMinPointX(lcntPoint);
-    var extLeft = [a.x, a.y];
-    a = findMaxPointX(lcntPoint);
-    var extRight = [a.x, a.y];
-
-    a = findMinPointY(lcntPoint);
-    var extTop = [a.x, a.y];
-
-    a = findMaxPointY(lcntPoint);
-    var extBottom = [a.x, a.y];
-
-    function findMinPointX(arr) {
-        var x = [];
-        for (let i = 0; i < arr.length; i++) {
-            x[i] = arr[i].x;
-        }
-        var MinPos = x.indexOf(Math.min(...x));
-        return arr[MinPos];
+        cv.drawContours(src, hull, i, color, 1, cv.LINE_8, hierarchy, 100);
     }
 
-    function findMaxPointX(arr) {
-        var x = [];
-        for (let i = 0; i < arr.length; i++) {
+    hierarchy.delete();
+    hull.delete();
+    return contours.get(index);
+}
 
-            x[i] = arr[i].x;
-        }
-
-        var MaxPos = x.indexOf(Math.max(...x));
-        return arr[MaxPos];
-    }
-
-    function findMinPointY(arr) {
-        var x = [];
-        for (let i = 0; i < arr.length; i++) {
-            x[i] = arr[i].y;
-        }
-        var MinPos = x.indexOf(Math.min(...x));
-        return arr[MinPos];
-    }
-
-    function findMaxPointY(arr) {
-        var y = [];
-        for (let i = 0; i < arr.length; i++) {
-            y[i] = arr[i].y;
-        }
-        var MaxPos = y.indexOf(Math.max(...y));
-        return arr[MaxPos];
-    }
-
-    console.log(`extreme left: ${extLeft}`);
-    console.log(`extreme top: ${extTop}`);
-    console.log(`extreme bottom: ${extBottom}`);
-    console.log(`extreme right: ${extRight}`);
-
-    let circlel = new cv.Circle(new cv.Point(...extLeft), 3);
-    let circler = new cv.Circle(new cv.Point(...extRight), 3);
-    let circlet = new cv.Circle(new cv.Point(...extTop), 3);
-    let circleb = new cv.Circle(new cv.Point(...extBottom), 3);
-    let circleColor = new cv.Scalar(255, 0, 0);
-
-    cv.circle(toShow, circlel.center, circlel.radius, circleColor);
-    cv.circle(toShow, circler.center, circler.radius, circleColor);
-    cv.circle(toShow, circlet.center, circlet.radius, circleColor);
-    cv.circle(toShow, circleb.center, circleb.radius, circleColor);
-
-    cv.imshow('rect', toShow);
-
-
-// You can try more different parameters
+function drawMinRect(cnt, src) {
     let rotatedRect = cv.minAreaRect(cnt);
     let vertices = cv.RotatedRect.points(rotatedRect);
-    let contoursColor = new cv.Scalar(255, 255, 255);
-    let rectangleColor = new cv.Scalar(255, 0, 0);
+    let rectangleColor = new cv.Scalar(0, 177, 106, 255);
 
     for (let i = 0; i < 4; i++) {
-        cv.line(toShow, vertices[i], vertices[(i + 1) % 4], rectangleColor, 2, cv.LINE_AA, 0);
+        cv.line(src, vertices[i], vertices[(i + 1) % 4], rectangleColor, 2, cv.LINE_AA, 0);
     }
-    // }
-    cv.imshow('rect', toShow);
-    toShow.delete();
-    src1.delete();
-    src2.delete();
-    dst.delete();
+
 }
+
