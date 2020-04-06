@@ -109,56 +109,71 @@ function process() {
 function drawExtremePoints(cnt, src) {
     var lcntPoint = [];
     for (let i = 0; i < cnt.rows; i++) {
-
         lcntPoint.push({x: cnt.data32S[i * 2], y: cnt.data32S[i * 2 + 1]});
     }
-    var a = findMinPointX(lcntPoint);
+    var a = findSmallestSum(lcntPoint);
     var extLeft = [a.x, a.y];
-    a = findMaxPointX(lcntPoint);
+    console.log(a);
+
+    a = findMaxSum(lcntPoint);
     var extRight = [a.x, a.y];
+    console.log(a);
 
-    a = findMinPointY(lcntPoint);
+    a = findSmallestDiff(lcntPoint);
     var extTop = [a.x, a.y];
+    console.log(a);
 
-    a = findMaxPointY(lcntPoint);
+    a = findLargestDiff(lcntPoint);
     var extBottom = [a.x, a.y];
+    console.log(a);
 
-    function findMinPointX(arr) {
-        var x = [];
-        for (let i = 0; i < arr.length; i++) {
-            x[i] = arr[i].x;
+    function findSmallestSum(arr) {
+        let smallestSum = (arr[0].x + arr[0].y);
+        let index = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if ((arr[i].x + arr[i].y) < smallestSum) {
+                smallestSum = arr[i].x + arr[i].y;
+                index = i;
+            }
         }
-        var MinPos = x.indexOf(Math.min(...x));
-        return arr[MinPos];
+        return arr[index];
     }
 
-    function findMaxPointX(arr) {
-        var x = [];
-        for (let i = 0; i < arr.length; i++) {
-
-            x[i] = arr[i].x;
+    function findMaxSum(arr) {
+        let maxSum = (arr[0].x + arr[0].y);
+        let index = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if ((arr[i].x + arr[i].y) > maxSum) {
+                maxSum = arr[i].x + arr[i].y;
+                index = i;
+            }
         }
-
-        var MaxPos = x.indexOf(Math.max(...x));
-        return arr[MaxPos];
+        return arr[index];
     }
 
-    function findMinPointY(arr) {
-        var x = [];
-        for (let i = 0; i < arr.length; i++) {
-            x[i] = arr[i].y;
+    function findSmallestDiff(arr) {
+        let smallestDiff = arr[0].y - arr[0].x;
+        let index = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if ((arr[i].y - arr[i].x) < smallestDiff) {
+                smallestDiff = arr[i].y - arr[i].x;
+                index = i;
+                console.log(smallestDiff);
+            }
         }
-        var MinPos = x.indexOf(Math.min(...x));
-        return arr[MinPos];
+        return arr[index];
     }
 
-    function findMaxPointY(arr) {
-        var y = [];
-        for (let i = 0; i < arr.length; i++) {
-            y[i] = arr[i].y;
+    function findLargestDiff(arr) {
+        let largestDiff = arr[0].y - arr[0].x;
+        let index = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if ((arr[i].y - arr[i].x) > largestDiff) {
+                largestDiff = arr[i].y - arr[i].x;
+                index = i;
+            }
         }
-        var MaxPos = y.indexOf(Math.max(...y));
-        return arr[MaxPos];
+        return arr[index];
     }
 
     // console.log(`extreme left: ${extLeft}`);
