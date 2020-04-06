@@ -1,5 +1,25 @@
 let video, contours, src2, toShow, cap, FPS, threshold1, threshold2, apertureSize, dilate, anchora, closedKsize, ksizea;
 
+document.getElementById('threshold1').addEventListener('input', (e) => {
+    threshold1 = parseFloat(e.target.value);
+    process();
+
+});
+document.getElementById('threshold2').addEventListener('input', (e) => {
+    threshold2 = parseFloat(e.target.value);
+    process();
+});
+document.getElementById('closedKsize').addEventListener('input', (e) => {
+    closedKsize = parseFloat(e.target.value);
+    process();
+
+});
+document.getElementById('dilate').addEventListener('input', (e) => {
+    dilate = parseFloat(e.target.value);
+    process();
+
+});
+
 function onOpenCvReady() {
     cv['onRuntimeInitialized'] = () => {
         process();
@@ -18,23 +38,27 @@ function process() {
         src2 = cv.imread('withbook');
         toShow = cv.imread('withbook');
         let dst = new cv.Mat();
-        let begin = Date.now();
-        // cap.read(src2);
-        // cap.read(toShow);
+        let src1;
+        try {
 
-        let src1 = cv.imread("empty");
-        // let toShow = cv.imread("test");
-        // let src2 = cv.imread("test");
-        gray(src1);
-        gray(src2);
+            src1 = cv.imread("empty");
+        } catch (e) {
+            console.log('empty background not found');
+        }
+
+        if (src1)
+            gray(src1, src1);
+        gray(src2, src2);
         cv.imshow('grayscale', src2);
 
-        gaussianBlur(src1);
-        gaussianBlur(src2);
+        if (src1)
+            gaussianBlur(src1, src1);
+        gaussianBlur(src2, src2);
+        gaussianBlur(src2, dst);
         cv.imshow('blur', src2);
 
-        cv.subtract(src1, src2, dst);
-
+        if (src1)
+            cv.subtract(src1, src2, dst);
         cv.imshow('subtract', dst);
 
         dilatef(dst);
@@ -56,10 +80,10 @@ function process() {
 
             // drawMinRect(biggestPerimaterContour, toShow);
         }
-        // cv.imshow('rect', toShow);
 
         toShow.delete();
-        src1.delete();
+        if (src1)
+            src1.delete();
         src2.delete();
         dst.delete();
         contours.delete();
@@ -75,19 +99,15 @@ function drawExtremePoints(cnt, src) {
     }
     var a = findSmallestSum(lcntPoint);
     var extLeft = [a.x, a.y];
-    console.log(a);
 
     a = findMaxSum(lcntPoint);
     var extRight = [a.x, a.y];
-    console.log(a);
 
     a = findSmallestDiff(lcntPoint);
     var extTop = [a.x, a.y];
-    console.log(a);
 
     a = findLargestDiff(lcntPoint);
     var extBottom = [a.x, a.y];
-    console.log(a);
 
     function findSmallestSum(arr) {
         let smallestSum = (arr[0].x + arr[0].y);
@@ -120,7 +140,6 @@ function drawExtremePoints(cnt, src) {
             if ((arr[i].y - arr[i].x) < smallestDiff) {
                 smallestDiff = arr[i].y - arr[i].x;
                 index = i;
-                console.log(smallestDiff);
             }
         }
         return arr[index];
@@ -162,13 +181,13 @@ function drawExtremePoints(cnt, src) {
 
 }
 
-function gray(src) {
-    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+function gray(src, dst) {
+    cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY, 0);
 }
 
-function gaussianBlur(src) {
+function gaussianBlur(src, dst) {
     let ksize = new cv.Size(ksizea, ksizea);
-    cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
+    cv.GaussianBlur(src, dst, ksize, 0, 0, cv.BORDER_DEFAULT);
 }
 
 function dilatef(src) {
@@ -201,7 +220,9 @@ function findAndDrawContours(src) {
     for (let i = 0; i < contours.size(); ++i) {
         let tmp = new cv.Mat();
         let cnt = contours.get(i);
-        // You can try more different parameters
+        // cv.approxPolyDP(cnt, tmp, 3, true);
+        // hull.push_back(tmp);
+
         cv.convexHull(cnt, tmp, false, true);
         hull.push_back(tmp);
         cnt.delete();
@@ -211,12 +232,16 @@ function findAndDrawContours(src) {
     let index = 0;
     for (let i = 0; i < contours.size(); ++i) {
         let cnt = contours.get(i);
-        if (max < cv.arcLength(cnt, true)) {
+        // if (max < cv.arcLength(cnt, true)) {
+        //     index = i;
+        //     max = cv.arcLength(cnt, true);
+        // }
+        if (max < cv.contourArea(cnt, false)) {
             index = i;
-            max = cv.arcLength(cnt, true);
+            max = cv.contourArea(cnt, false);
         }
         let color = new cv.Scalar(Math.round(Math.random() * 255), Math.round(Math.random() * 255),
-            Math.round(Math.random() * 255));
+            Math.round(Math.random() * 255), 255);
         cv.drawContours(src, hull, i, color, 1, cv.LINE_8, hierarchy, 100);
     }
 
