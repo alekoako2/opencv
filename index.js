@@ -1,28 +1,43 @@
 let video, contours, src2, toShow, cap, FPS, threshold1, threshold2, apertureSize, dilate, anchora, closedKsize, ksizea;
 
-document.getElementById('threshold1').addEventListener('input', (e) => {
-    threshold1 = parseFloat(e.target.value);
-    process();
-
-});
-document.getElementById('threshold2').addEventListener('input', (e) => {
-    threshold2 = parseFloat(e.target.value);
-    process();
-});
-document.getElementById('closedKsize').addEventListener('input', (e) => {
-    closedKsize = parseFloat(e.target.value);
-    process();
-
-});
-document.getElementById('dilate').addEventListener('input', (e) => {
-    dilate = parseFloat(e.target.value);
-    process();
-
-});
-
 function onOpenCvReady() {
     cv['onRuntimeInitialized'] = () => {
-        process();
+
+        var player = document.getElementById('player');
+        var snapshotCanvas = document.getElementById('snapshot');
+        var captureButton = document.getElementById('capture');
+
+        var handleSuccess = function (stream) {
+            // Attach the video stream to the video element and autoplay.
+            player.srcObject = stream;
+        };
+
+        captureButton.addEventListener('click', function () {
+            var context = snapshot.getContext('2d');
+            // Draw the video frame to the canvas.
+            context.drawImage(player, 0, 0, snapshotCanvas.width,
+                snapshotCanvas.height);
+            process();
+        });
+
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({video: true})
+                .then(handleSuccess);
+
+            // Not adding `{ audio: true }` since we only want video now
+            navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
+                //video.src = window.URL.createObjectURL(stream);
+                video.srcObject = stream;
+                video.play();
+            });
+        }
+        video = document.getElementById('video');
+
+
+        cap = new cv.VideoCapture(video);
+
+        FPS = 5;
     };
 }
 
@@ -35,30 +50,26 @@ function process() {
         closedKsize = parseFloat(document.getElementById('closedKsize').value),
         ksizea = parseFloat(document.getElementById('ksize').value);
     try {
-        src2 = cv.imread('withbook');
-        toShow = cv.imread('withbook');
+        src2 = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+        toShow = new cv.Mat(video.height, video.width, cv.CV_8UC4);
         let dst = new cv.Mat();
-        let src1;
-        try {
+        let begin = Date.now();
+        cap.read(src2);
+        cap.read(toShow);
 
-            src1 = cv.imread("empty");
-        } catch (e) {
-            console.log('empty background not found');
-        }
-
-        if (src1)
-            gray(src1, src1);
-        gray(src2, src2);
+        let src1 = cv.imread("snapshot");
+        // let toShow = cv.imread("test");
+        // let src2 = cv.imread("test");
+        gray(src1);
+        gray(src2);
         cv.imshow('grayscale', src2);
 
-        if (src1)
-            gaussianBlur(src1, src1);
-        gaussianBlur(src2, src2);
-        gaussianBlur(src2, dst);
+        gaussianBlur(src1);
+        gaussianBlur(src2);
         cv.imshow('blur', src2);
 
-        if (src1)
-            cv.subtract(src1, src2, dst);
+        cv.subtract(src1, src2, dst);
+
         cv.imshow('subtract', dst);
 
         dilatef(dst);
@@ -80,13 +91,16 @@ function process() {
 
             // drawMinRect(biggestPerimaterContour, toShow);
         }
+        // cv.imshow('rect', toShow);
 
         toShow.delete();
-        if (src1)
-            src1.delete();
+        src1.delete();
         src2.delete();
         dst.delete();
         contours.delete();
+
+        let delay = 1000 / FPS - (Date.now() - begin);
+        setTimeout(process, delay);
     } catch (e) {
         console.log(e);
     }
@@ -181,13 +195,13 @@ function drawExtremePoints(cnt, src) {
 
 }
 
-function gray(src, dst) {
-    cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY, 0);
+function gray(src) {
+    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
 }
 
-function gaussianBlur(src, dst) {
+function gaussianBlur(src) {
     let ksize = new cv.Size(ksizea, ksizea);
-    cv.GaussianBlur(src, dst, ksize, 0, 0, cv.BORDER_DEFAULT);
+    cv.GaussianBlur(src, src, ksize, 0, 0, cv.BORDER_DEFAULT);
 }
 
 function dilatef(src) {
@@ -220,9 +234,7 @@ function findAndDrawContours(src) {
     for (let i = 0; i < contours.size(); ++i) {
         let tmp = new cv.Mat();
         let cnt = contours.get(i);
-        // cv.approxPolyDP(cnt, tmp, 3, true);
-        // hull.push_back(tmp);
-
+        // You can try more different parameters
         cv.convexHull(cnt, tmp, false, true);
         hull.push_back(tmp);
         cnt.delete();
@@ -241,7 +253,7 @@ function findAndDrawContours(src) {
             max = cv.contourArea(cnt, false);
         }
         let color = new cv.Scalar(Math.round(Math.random() * 255), Math.round(Math.random() * 255),
-            Math.round(Math.random() * 255), 255);
+            Math.round(Math.random() * 255));
         cv.drawContours(src, hull, i, color, 1, cv.LINE_8, hierarchy, 100);
     }
 

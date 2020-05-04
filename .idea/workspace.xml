@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c43e61be-8c3c-4afd-9a43-0822788bae41" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ax.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ax2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/newcropped.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
@@ -31,18 +27,10 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IgnoredFileRootStore">
-    <option name="generatedRoots">
-      <set>
-        <option value="$PROJECT_DIR$/.idea" />
-      </set>
-    </option>
-  </component>
   <component name="ProjectId" id="1XwimtPxI9VWdessYin0XIMGqrd" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
@@ -56,12 +44,12 @@
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="img.jpeg img2.jpeg img3.jpeg img4.jpg" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -125,9 +113,10 @@
     </state>
     <state width="500" height="400" key="SwitcherDM/0.23.1440.877@0.23.1440.877" timestamp="1586174868498" />
     <state width="500" height="445" key="SwitcherDM/0.23.1920.1177@0.23.1920.1177" timestamp="1583780932476" />
-    <state x="75" y="98" width="1290" height="728" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1586173658266">
-      <screen x="0" y="23" width="1440" height="877" />
+    <state x="-138" y="-967" width="1720" height="878" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588595290028">
+      <screen x="-238" y="-1057" width="1920" height="1057" />
     </state>
+    <state x="-138" y="-967" width="1720" height="878" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-238.-1057.1920.1057/0.23.1440.877@-238.-1057.1920.1057" timestamp="1588595290028" />
     <state x="75" y="98" width="1290" height="728" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1440.877@0.23.1440.877" timestamp="1586173658266" />
     <state x="100" y="123" width="1720" height="977" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1920.1177@0.23.1920.1177" timestamp="1583782434219" />
     <state x="466" y="99" key="git4idea.branch.GitSmartOperationDialog" timestamp="1585918441597">
